@@ -7,12 +7,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Outfit:wght@400;500;600;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+/* -- ORIGINAL STYLES -- */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:#080B14;color:#E2E8F0;font-family:'Outfit',sans-serif;height:100vh;overflow:hidden}
-#app{display:flex;height:100vh;overflow:hidden}
+#app{display:flex;height:100vh;overflow:hidden;position:relative}
 
-/* ── SIDEBAR ── */
-#sidebar{width:260px;background:#0D1117;border-right:1px solid #1F2937;display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
+#sidebar{width:260px;background:#0D1117;border-right:1px solid #1F2937;display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;transition:transform 0.3s ease}
 .sb-header{padding:20px 16px 12px;border-bottom:1px solid #1F2937}
 .sb-title{font-size:13px;font-weight:700;color:#F97316;font-family:'Fira Code',monospace;letter-spacing:2px;text-transform:uppercase}
 .sb-sub{font-size:11px;color:#4B5563;margin-top:4px}
@@ -21,191 +21,83 @@ body{background:#080B14;color:#E2E8F0;font-family:'Outfit',sans-serif;height:100
 .sb-prog-bar{height:4px;background:#1F2937;border-radius:2px;overflow:hidden}
 .sb-prog-fill{height:100%;background:#F97316;border-radius:2px;transition:width .4s}
 .sb-scroll{flex:1;overflow-y:auto;padding:8px 0}
-.sb-scroll::-webkit-scrollbar{width:4px}
-.sb-scroll::-webkit-scrollbar-thumb{background:#1F2937;border-radius:2px}
-.sb-mod{margin-bottom:2px}
-.sb-mod-btn{width:100%;background:none;border:none;padding:10px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .15s;border-radius:0}
-.sb-mod-btn:hover{background:#111827}
-.sb-mod-btn.active{background:#111827}
-.sb-mod-icon{font-size:16px;flex-shrink:0}
-.sb-mod-label{flex:1;text-align:left}
-.sb-mod-num{font-size:10px;font-family:'Fira Code',monospace;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.sb-mod-btn{width:100%;background:none;border:none;padding:10px 16px;display:flex;align-items:center;gap:10px;cursor:pointer}
 .sb-mod-name{font-size:12px;font-weight:600;color:#E2E8F0}
-.sb-mod-chevron{font-size:10px;color:#4B5563;transition:transform .2s}
-.sb-mod-chevron.open{transform:rotate(90deg)}
 .sb-lessons{overflow:hidden;max-height:0;transition:max-height .25s ease}
 .sb-lessons.open{max-height:600px}
-.sb-lesson-btn{width:100%;background:none;border:none;padding:7px 16px 7px 42px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:background .1s;text-align:left}
-.sb-lesson-btn:hover{background:#111827}
-.sb-lesson-btn.active{background:#111827}
-.sb-lesson-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:#1F2937}
-.sb-lesson-dot.done{background:#059669}
-.sb-lesson-name{font-size:12px;color:#9CA3AF;flex:1;line-height:1.4}
-.sb-lesson-name.active{color:#F1F5F9;font-weight:600}
+.sb-lesson-btn{width:100%;background:none;border:none;padding:7px 16px 7px 42px;display:flex;align-items:center;gap:8px;cursor:pointer;text-align:left}
+.sb-lesson-name{font-size:12px;color:#9CA3AF}
 
-/* ── MAIN ── */
-#main{flex:1;overflow-y:auto;min-width:0}
-#main::-webkit-scrollbar{width:6px}
-#main::-webkit-scrollbar-thumb{background:#1F2937;border-radius:3px}
+#main{flex:1;overflow-y:auto;min-width:0;transition:filter 0.3s ease}
 .content{max-width:820px;margin:0 auto;padding:40px 32px 80px}
 
-/* ── HOME ── */
-.home-hero{margin-bottom:48px}
-.home-badge{display:inline-block;padding:4px 12px;border-radius:20px;background:#F9731620;color:#F97316;font-size:11px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
-.home-title{font-size:42px;font-weight:800;font-family:'Syne',sans-serif;line-height:1.15;margin-bottom:12px}
-.home-sub{font-size:16px;color:#9CA3AF;line-height:1.7;max-width:600px}
-.home-stats{display:flex;gap:24px;margin-top:24px;flex-wrap:wrap}
-.stat-card{background:#111827;border:1px solid #1F2937;border-radius:12px;padding:16px 20px;min-width:120px}
-.stat-val{font-size:28px;font-weight:800;font-family:'Syne',sans-serif;color:#F97316}
-.stat-lbl{font-size:12px;color:#6B7280;margin-top:2px}
-.mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:680px){.mod-grid{grid-template-columns:1fr}}
-.mod-card{background:#111827;border:1px solid #1F2937;border-radius:16px;padding:24px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
-.mod-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px #00000040}
-.mod-card-stripe{position:absolute;top:0;left:0;right:0;height:3px}
-.mod-card-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.mod-card-icon{font-size:28px}
-.mod-card-meta{font-size:10px;font-family:'Fira Code',monospace;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px}
-.mod-card-title{font-size:16px;font-weight:700;font-family:'Syne',sans-serif;color:#F1F5F9}
-.mod-card-desc{font-size:13px;color:#6B7280;line-height:1.6;margin-bottom:16px}
-.mod-card-footer{display:flex;justify-content:space-between;align-items:center}
-.mod-card-count{font-size:11px;color:#6B7280;font-family:'Fira Code',monospace}
-.mod-card-pct{font-size:13px;font-weight:700;font-family:'Fira Code',monospace}
-.prog-bar{height:4px;background:#1F2937;border-radius:2px;overflow:hidden;margin-top:12px}
-.prog-fill{height:100%;border-radius:2px;transition:width .4s}
+/* -- MOBILE HEADER -- */
+#mobile-header {display:none;height:60px;background:#0D1117;border-bottom:1px solid #1F2937;align-items:center;padding:0 20px;position:fixed;top:0;left:0;right:0;z-index:100}
+.menu-btn {background:none;border:none;color:#F97316;font-size:24px;cursor:pointer;margin-right:15px}
 
-/* ── MODULE VIEW ── */
-.breadcrumb{font-size:13px;margin-bottom:8px;cursor:pointer}
-.module-header{display:flex;align-items:center;gap:16px;margin-bottom:8px}
-.module-icon{font-size:48px}
-.module-num{font-size:11px;font-family:'Fira Code',monospace;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px}
-.module-title{font-size:32px;font-weight:800;font-family:'Syne',sans-serif}
-.module-overview{color:#9CA3AF;font-size:14px;line-height:1.7;margin-bottom:24px}
-.progress-card{background:#111827;border:1px solid #1F2937;border-radius:12px;padding:16px 20px;margin-bottom:32px;display:flex;gap:24px;align-items:center}
-.progress-label{font-size:12px;color:#6B7280;margin-bottom:8px}
-.progress-pct-val{font-size:22px;font-weight:800;font-family:'Syne',sans-serif}
-.progress-sub{font-size:11px;color:#6B7280}
-.section-title{font-size:16px;font-weight:700;color:#F1F5F9;margin-bottom:16px;font-family:'Syne',sans-serif}
-.lesson-row{background:#111827;border:1px solid #1F2937;border-radius:12px;padding:18px 20px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:16px;transition:all .15s}
-.lesson-row:hover{border-color:var(--accent)}
-.lesson-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:'Fira Code',monospace;flex-shrink:0}
-.lesson-info{flex:1}
-.lesson-name{font-size:14px;font-weight:600;color:#F1F5F9;margin-bottom:4px}
-.lesson-meta{font-size:12px;color:#6B7280}
-.lesson-pct{font-size:12px;font-family:'Fira Code',monospace}
-.project-card{background:#111827;border:1px solid #1F2937;border-radius:16px;padding:24px;margin-top:32px;border-left:4px solid #F97316}
-.project-banner{font-size:11px;font-family:'Fira Code',monospace;font-weight:700;color:#F97316;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
-.project-title{font-size:20px;font-weight:700;font-family:'Syne',sans-serif;color:#F1F5F9;margin-bottom:4px}
-.project-time{font-size:11px;color:#F97316;font-family:'Fira Code',monospace;margin-bottom:12px}
-.project-desc{font-size:13px;color:#9CA3AF;line-height:1.75;margin-bottom:16px}
-.skill-tags{display:flex;flex-wrap:wrap;gap:8px}
-.skill-tag{padding:4px 10px;border-radius:6px;background:#1F2937;color:#9CA3AF;font-size:11px;font-family:'Fira Code',monospace}
-
-/* ── LESSON VIEW ── */
-.lesson-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #1F2937}
-.lesson-title{font-size:28px;font-weight:800;font-family:'Syne',sans-serif;margin:8px 0 12px}
-.meta-badges{display:flex;gap:8px;flex-wrap:wrap}
-.meta-badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;font-family:'Fira Code',monospace}
-
-/* ── CONTENT BLOCKS ── */
-.content-text{font-size:14px;color:#CBD5E1;line-height:1.85;margin-bottom:20px;white-space:pre-line}
-.callout{border-radius:10px;padding:14px 18px;margin-bottom:20px;border-left:3px solid;font-size:13px;line-height:1.7}
-.callout-info{background:#0B1A2E;border-color:#1D4ED8;color:#93C5FD}
-.callout-warning{background:#1C1500;border-color:#D97706;color:#FCD34D}
-.callout-tip{background:#0A1F17;border-color:#059669;color:#6EE7B7}
-.code-block{background:#0D1117;border:1px solid #1F2937;border-radius:10px;margin-bottom:20px;overflow:hidden}
-.code-header{padding:8px 16px;background:#111827;border-bottom:1px solid #1F2937;display:flex;justify-content:space-between;align-items:center}
-.code-lang{font-size:11px;color:#6B7280;font-family:'Fira Code',monospace;text-transform:uppercase}
-.code-copy{background:none;border:1px solid #374151;border-radius:6px;color:#9CA3AF;font-size:11px;padding:3px 10px;cursor:pointer;font-family:'Fira Code',monospace;transition:all .15s}
-.code-copy:hover{border-color:#9CA3AF;color:#F1F5F9}
-.code-pre{padding:16px;overflow-x:auto;font-family:'Fira Code',monospace;font-size:12px;line-height:1.7;color:#A5D6FF;margin:0}
-
-/* ── ASSIGNMENTS ── */
-.assign-section{margin-top:40px;padding-top:32px;border-top:1px solid #1F2937}
-.assign-title{font-size:18px;font-weight:700;font-family:'Syne',sans-serif;color:#F1F5F9;margin-bottom:16px}
-.assign-card{background:#111827;border:1px solid #1F2937;border-radius:12px;padding:20px;margin-bottom:12px;transition:border-color .15s}
-.assign-card.done{border-color:#05966940}
-.assign-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px}
-.assign-check{width:20px;height:20px;border-radius:6px;border:1.5px solid #374151;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-top:2px;transition:all .15s;background:transparent;font-size:11px}
-.assign-check.done{background:#059669;border-color:#059669;color:#fff}
-.assign-info{flex:1}
-.assign-name{font-size:14px;font-weight:600;color:#F1F5F9;margin-bottom:8px}
-.assign-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.badge{padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:.5px}
-.badge-beginner{background:#052e1640;color:#6EE7B7}
-.badge-intermediate{background:#1e3a5f40;color:#60A5FA}
-.badge-advanced{background:#3b0f6840;color:#C084FC}
-.badge-time{background:#1F2937;color:#9CA3AF}
-.badge-type{background:#1F2937;color:#9CA3AF}
-.assign-desc{font-size:13px;color:#9CA3AF;line-height:1.7;margin-bottom:8px;white-space:pre-line}
-.assign-deliverable{font-size:12px;color:#6B7280;font-family:'Fira Code',monospace;padding:8px 12px;background:#0D1117;border-radius:6px;border-left:3px solid #374151}
-
-/* ── QUIZ ── */
-.quiz-section{margin-top:32px}
-.quiz-header{background:#111827;border:1px solid #1F2937;border-radius:14px;padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:16px;transition:all .2s;border-left:4px solid var(--accent)}
-.quiz-header.open{border-color:color-mix(in srgb, var(--accent) 50%, transparent)}
-.quiz-header-left{flex:1}
-.quiz-header-title{display:flex;align-items:center;gap:10px;margin-bottom:4px}
-.quiz-title-text{font-size:14px;font-weight:700;color:#F1F5F9;font-family:'Syne',sans-serif}
-.badge-optional{padding:2px 10px;border-radius:20px;background:#818CF820;color:#818CF8;font-size:10px;font-weight:700;font-family:'Fira Code',monospace}
-.badge-qcount{padding:2px 10px;border-radius:20px;background:#1E2937;color:#6B7280;font-size:10px;font-family:'Fira Code',monospace}
-.quiz-subtitle{font-size:12px;color:#6B7280}
-.quiz-header-right{text-align:right;flex-shrink:0}
-.quiz-score{font-size:12px;font-family:'Fira Code',monospace;font-weight:700;margin-bottom:4px}
-.quiz-chevron{font-size:18px;color:#6B7280}
-.quiz-body{margin-top:16px;display:none}
-.quiz-body.open{display:block}
-.quiz-prog-row{display:flex;gap:8px;margin-bottom:20px;align-items:center}
-.quiz-prog-bar{height:4px;flex:1;background:#1F2937;border-radius:2px;overflow:hidden}
-.quiz-prog-fill{height:100%;border-radius:2px;transition:width .4s;background:var(--accent)}
-.quiz-prog-label{font-size:11px;color:#6B7280;font-family:'Fira Code',monospace;flex-shrink:0}
-.quiz-section-label{font-size:13px;font-weight:700;margin-bottom:12px;font-family:'Syne',sans-serif;display:flex;align-items:center;gap:8px}
-.quiz-dot{width:6px;height:6px;border-radius:50%;display:inline-block}
-.mc-card{background:#111827;border:1px solid #1F2937;border-radius:12px;padding:20px;margin-bottom:12px}
-.mc-q{font-size:13px;font-weight:600;color:#E2E8F0;margin-bottom:14px;line-height:1.6}
-.mc-qnum{color:#818CF8;font-family:'Fira Code',monospace;font-size:11px;margin-right:8px}
-.mc-options{display:flex;flex-direction:column;gap:8px}
-.mc-option{padding:10px 14px;border-radius:8px;border:1px solid #2A3352;background:#1A2332;color:#9CA3AF;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .15s;line-height:1.5}
-.mc-option:hover:not(.answered){border-color:#4B5563;color:#E2E8F0}
-.mc-option.correct{background:#0A1F17;border-color:#059669;color:#6EE7B7}
-.mc-option.wrong{background:#1C0A0A;border-color:#DC2626;color:#FCA5A5}
-.mc-option-letter{width:20px;height:20px;border-radius:4px;border:1px solid #2A3352;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;font-family:'Fira Code',monospace}
-.mc-option.correct .mc-option-letter{background:#059669;border-color:#059669;color:#fff}
-.mc-option.wrong .mc-option-letter{background:#DC2626;border-color:#DC2626;color:#fff}
-.mc-explanation{margin-top:12px;padding:10px 14px;background:#0B1A2E;border-radius:8px;border:1px solid #1D4ED8;font-size:12px;color:#93C5FD;line-height:1.6}
-.mc-explanation strong{color:#60A5FA}
-.sa-card{background:#111827;border:1px solid #1F2937;border-radius:12px;padding:20px;margin-bottom:12px}
-.sa-q{font-size:13px;font-weight:600;color:#E2E8F0;margin-bottom:14px;line-height:1.6}
-.sa-qnum{color:#FBBF24;font-family:'Fira Code',monospace;font-size:11px;margin-right:8px}
-.sa-textarea{width:100%;min-height:90px;background:#0D1117;border:1px solid #2A3352;border-radius:8px;padding:10px 12px;color:#E2E8F0;font-size:12px;font-family:'Outfit',sans-serif;line-height:1.6;resize:vertical;outline:none;box-sizing:border-box;transition:border-color .15s}
-.sa-textarea:focus{border-color:#374151}
-.sa-footer{display:flex;justify-content:flex-end;margin-top:8px}
-.sa-reveal-btn{padding:7px 16px;border-radius:8px;background:#FBBF2420;border:1px solid #FBBF2460;color:#FBBF24;font-size:12px;cursor:pointer;font-weight:600;font-family:'Outfit',sans-serif;transition:all .15s}
-.sa-reveal-btn:hover{background:#FBBF2430}
-.sa-revealed-label{font-size:11px;color:#059669;font-family:'Fira Code',monospace}
-.sa-model{margin-top:12px;padding:14px 16px;background:#0A1F17;border-radius:8px;border:1px solid #05996960;display:none}
-.sa-model.open{display:block}
-.sa-model-label{font-size:11px;color:#6EE7B7;font-weight:600;margin-bottom:6px;font-family:'Fira Code',monospace}
-.sa-model-text{font-size:12px;color:#A7F3D0;line-height:1.75}
-.sa-model-hint{margin-top:10px;font-size:11px;color:#6B7280;font-style:italic}
-.quiz-complete{margin-top:16px;padding:16px 20px;background:#0A1F17;border-radius:12px;border:1px solid #059669;text-align:center}
-.quiz-complete-title{font-size:16px;font-weight:700;color:#6EE7B7;font-family:'Syne',sans-serif}
-.quiz-complete-sub{font-size:13px;color:#A7F3D0;margin-top:4px}
-
-/* ── NAV ROW ── */
-.nav-row{display:flex;justify-content:space-between;gap:12px;margin-top:40px;padding-top:24px;border-top:1px solid #1F2937}
-.nav-btn{padding:10px 18px;border-radius:10px;border:1px solid #374151;background:transparent;color:#9CA3AF;font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
-.nav-btn:hover{border-color:#6B7280;color:#F1F5F9}
-.nav-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
-.nav-btn.primary:hover{opacity:.9}
+/* -- RESPONSIVE FIREWALL -- */
+@media (max-width: 768px) {
+    #mobile-header {display:flex}
+    #sidebar {position:fixed;left:0;top:60px;bottom:0;z-index:99;transform:translateX(-100%);width:280px;box-shadow:20px 0 50px rgba(0,0,0,0.5)}
+    #sidebar.open {transform:translateX(0)}
+    #main {margin-top:60px}
+    #main.overlay-active {filter:brightness(0.4);pointer-events:none}
+    .content {padding:20px}
+    .home-title {font-size:32px}
+    .mod-grid {grid-template-columns:1fr}
+    .nav-row {flex-direction:column}
+    .nav-btn {width:100%;text-align:center}
+}
 </style>
 </head>
 <body>
+<header id="mobile-header">
+    <button class="menu-btn" id="menu-toggle-btn">☰</button>
+    <div style="font-family:'Syne';font-weight:800;font-size:14px">LANGCHAIN ENGINEERING</div>
+</header>
+
 <div id="app">
-  <div id="sidebar"></div>
-  <div id="main"><div class="content" id="content"></div></div>
+    <div id="sidebar"></div>
+    <div id="main">
+        <div class="content" id="content"></div>
+    </div>
 </div>
 <script>
+  // -- MOBILE SIDEBAR LOGIC --
+const menuToggle = document.getElementById('menu-toggle-btn');
+const sidebar = document.getElementById('sidebar');
+const mainArea = document.getElementById('main');
+
+function closeSidebar() {
+    sidebar.classList.remove('open');
+    mainArea.classList.remove('overlay-active');
+}
+
+menuToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    sidebar.classList.toggle('open');
+    mainArea.classList.toggle('overlay-active');
+});
+
+// Close sidebar when clicking the content area
+mainArea.addEventListener('click', () => {
+    if (sidebar.classList.contains('open')) closeSidebar();
+});
+
+// -- UPDATED NAV FUNCTIONS --
+// Update your existing goHome, goModule, and goLesson functions to call closeSidebar()
+function goHome() { 
+    closeSidebar(); 
+    state.view='home'; state.selectedModule=null; state.selectedLesson=null; render(); 
+}
+function goModule(m) { 
+    closeSidebar(); 
+    state.view='module'; state.selectedModule=m; state.selectedLesson=null; render(); 
+}
+function goLesson(m,l) { 
+    closeSidebar(); 
+    state.view='lesson'; state.selectedModule=m; state.selectedLesson=l; render(); 
+}
 const MODULES = [
   /* ── MODULE 1 ─────────────────────────────────────────────── */
   {
